@@ -1,0 +1,32 @@
+#/usr/share/nginx/html
+
+#server {
+#    listen 80;
+#    listen [::]:80;
+
+#    root /var/www/{{ domain_name }};
+#    root /usr/share/nginx/{{ domain_name }};
+#    index index.php index.html index.htm index.nginx-debian.html;
+
+#    server_name {{ domain_name }};
+
+#    location / {
+#        try_files $uri $uri/ =404;
+#    }
+server {
+    listen 80;
+    server_name {{ domain_name }} www.{{ domain_name }};
+
+    location / {
+        root /var/www/{{ domain_name }}/html;
+
+        index  index.html index.htm;
+        try_files $uri $uri/ =404;
+    }
+
+    error_page  500 502 503 504  /50x.html;
+    location = /50x.html {
+        #root  /usr/share/nginx/html;
+    root  /var/www/{{ domain_name }}/html;
+      }
+       }

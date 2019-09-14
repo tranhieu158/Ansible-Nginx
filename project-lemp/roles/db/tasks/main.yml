@@ -1,0 +1,12 @@
+---
+# tasks file for db
+#- name: Create web-root directory
+#  file:
+#    path: /var/wwwww/{{ domain_name }}
+#    state: directory
+- name: Ansible insert a line before example
+  lineinfile:
+        path: /etc/nginx/nginx.conf
+        line: include /etc/nginx/sites-enabled/*.conf;
+              server_names_hash_bucket_size 64;
+        insertbefore: Settings for a TLS enabled server.

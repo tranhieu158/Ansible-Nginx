@@ -1,0 +1,47 @@
+---
+# tasks file for web
+  - name: Create web-root directory
+    file:
+       path: /var/www/{{ domain_name }}/html
+       state: directory
+  - name: Ansible create file index.html
+    copy:
+      dest: "/var/www/{{ domain_name }}/html/index.html"
+      content: |
+        <html>
+         <head>
+         <title>Welcome to Example.com!</title>
+         </head>
+         <body>
+         <h1>Success! The example.com server block is working!</h1>
+         </body>
+        </html>
+        
+
+  - name: Add repo for NGINX
+    yum: name=epel-release state=present
+  - name: install nginx
+    yum: name=nginx state=present
+  - name:  Start nginx after install
+    service: name=nginx state=started
+  - name: Insert config into nginx.conf
+    lineinfile:
+        path: /etc/nginx/nginx.conf
+        line: include /etc/nginx/sites-enabled/*.conf;
+              server_names_hash_bucket_size 64;
+        insertbefore: Settings for a TLS enabled server.
+  - name: Create server block file
+    file:
+       path: /etc/nginx/sites-enabled
+       state: directory
+  - name: Create Nginx virtual host
+    template:
+     src: vhost.j2
+     dest: /etc/nginx/sites-enabled/{{ domain_name }}.conf
+    notify: restart nginx
+  - name: Open port 80  using firewall-cmd
+    command: firewall-cmd --permanent --zone=public --add-service=http
+  - name: Open port 443 using firewall-cmd
+    command: firewall-cmd --permanent --zone=public --add-service=https
+  - name: firewall reload
+    command: firewall-cmd --reload

@@ -1,0 +1,24 @@
+
+- hosts: servers
+  remote_user: root
+  tasks:
+  - name: Install HTTP
+    yum: name=httpd state=latest
+  - name: Start HTTPD after install
+    service: name=httpd state=started
+  - name: backup config HTTP
+    command: cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.backup1 
+  - name: deloy config httpd
+    template:
+     src: "/etc/ansible/config/httpd.conf" 
+     dest: "/etc/httpd/conf/httpd.conf"
+     owner: root
+     group: root
+     mode: 0644
+  - name: Deloy web file
+    template:
+     src: "/etc/ansible/config/index.html"
+     dest: "/var/www/html/index.html"
+  - name:  Start httpd after install
+    service: name=httpd state=restarted
+
