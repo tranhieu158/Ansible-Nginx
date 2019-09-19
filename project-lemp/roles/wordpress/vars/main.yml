@@ -1,0 +1,11 @@
+---
+# vars file for wordpress# Which version of WordPress to deploy
+ wp_version: 5.2.3
+# wp_sha256sum: 42ca594afc709cbef8528a6096f5a1efe96dcf3164e7ce321e87d57ae015cc82
+#
+# # These are the WordPress database settings
+ wp_db_name: wordpress 
+ wp_db_user: wordpressuser
+ wp_db_password: Tranhieu@123456
+ password: 5ekdsci6pa%L1
+ domain_name: vps2.hieutranqn.info

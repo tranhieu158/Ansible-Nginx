@@ -3,6 +3,8 @@
   become: yes
 
   roles:
- #   - common
-    - web
-  #  - db
+   # - common
+    # - web
+    # - db
+    # - php
+     - wordpress

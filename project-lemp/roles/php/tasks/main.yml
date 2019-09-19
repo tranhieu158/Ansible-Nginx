@@ -1,0 +1,38 @@
+---
+# tasks file for php
+#- name: Install yum-untils package
+#  yum: name=yum-untils
+
+#- name: install epel-release
+#  yum: name=epel-release
+#- name: import remi repository
+#  yum: name=http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+#- name: Enable the Remi repository 
+#  command: yum-config-manager --enable remi-php72
+#- name: install PHP and all the required modules 
+#  command: yum install php-fpm php-mysql php-mbstring php-xml php-gd php-cli php-json php-opcache php-curl
+- name: epel-release
+  yum: name=epel-release state=installed
+- name: Add repository 'remi-repo'
+  command: yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+- name: install yum-utils
+  yum: name=yum-utils state=installed
+- name: enable 'remi-repo'
+  command: yum-config-manager --enable remi-php72
+- name: install php70
+  yum: name={{ item }} state=installed
+  with_items:
+   
+    - php-fpm
+    - php-opcache
+    - php-cli
+    - php-gd
+    - php-curl
+    - php-mysql
+- name: enable fpm-php
+  service:
+    name: php-fpm
+    state: started
+    enabled: true
+
+

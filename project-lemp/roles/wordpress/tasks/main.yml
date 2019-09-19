@@ -1,0 +1,39 @@
+---
+# tasks file for wordpress
+- name: Ansible create file if it doesn't exist example
+  file:
+      path: "/root/.my.cnf"
+      state: touch
+- name: Insert/Update password to mysqld
+  blockinfile:
+    path: /root/.my.cnf
+    block: |
+       [client]
+       user=root
+       password={{ password }}
+       [mysql]
+       user=root
+       password={{ password }}
+- name: Create WordPress database
+  mysql_db: name={{ wp_db_name }} state=present
+- name: Create WordPress database user
+  mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
+
+
+- name: Download WordPress
+  get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/srv/wordpress-{{ wp_version }}.tar.gz
+
+- name: Extract archive
+  command: chdir=/srv/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/srv/wordpress
+- name: Coppy wp config to var/www
+  shell: cp -r /srv/wordpress/* /var/www/{{ domain_name }}/html/
+- name: Update WordPress config file
+  template: src=wp-config.php dest=/var/www/{{ domain_name }}/html/
+  notify:
+    - restart nginx
+
+
+
+
+
+

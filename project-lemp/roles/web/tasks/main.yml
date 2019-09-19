@@ -8,13 +8,13 @@
     copy:
       dest: "/var/www/{{ domain_name }}/html/index.html"
       content: |
-        <html>
-         <head>
-         <title>Welcome to Example.com!</title>
-         </head>
-         <body>
-         <h1>Success! The example.com server block is working!</h1>
-         </body>
+         <html>
+                 <head>
+                          <title>Welcome to Example.com!</title>
+                 </head>
+                 <body>
+                          <h1>Success! The example.com server block is working!</h1>
+                 </body>
         </html>
         
 
