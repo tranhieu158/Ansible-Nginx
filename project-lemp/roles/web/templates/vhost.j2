@@ -1,24 +1,9 @@
-#/usr/share/nginx/html
-
-#server {
-#    listen 80;
-#    listen [::]:80;
-
-#    root /var/www/{{ domain_name }};
-#    root /usr/share/nginx/{{ domain_name }};
-#    index index.php index.html index.htm index.nginx-debian.html;
-
-#    server_name {{ domain_name }};
-
-#    location / {
-#        try_files $uri $uri/ =404;
-#    }
 server {
         listen   80;
 
-        root /var/www/{{ domain_name }}/html;
+        root /var/www/{{ item.domain_name }}/html;
         index index.php index.html index.htm;
-        server_name  {{ domain_name }}  www.{{ domain_name }};
+        server_name  {{ item.domain_name }}  www.{{ item.domain_name }};
 
         location / {
                 try_files $uri $uri/ /index.php;

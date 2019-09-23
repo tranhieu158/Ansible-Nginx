@@ -1,4 +1,6 @@
 ---
 # vars file for common
-wp_db_name: hihihi
-password: 5ekdsci6pa%L1
+ 
+list_domain: 
+    - domain_name: vps2.hieutranqn.info
+    - domain_name: vps21.hieutranqn.info

@@ -26,9 +26,11 @@
 - name: Extract archive
   command: chdir=/srv/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/srv/wordpress
 - name: Coppy wp config to var/www
-  shell: cp -r /srv/wordpress/* /var/www/{{ domain_name }}/html/
+  shell: cp -r /srv/wordpress/* /var/www/{{ item.domain_name }}/html/
+  with_items: "{{ list_domain }}"
 - name: Update WordPress config file
-  template: src=wp-config.php dest=/var/www/{{ domain_name }}/html/
+  template: src=wp-config.php dest=/var/www/{{ item.domain_name }}/html/
+  with_items: "{{ list_domain }}"
   notify:
     - restart nginx
 

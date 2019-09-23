@@ -8,4 +8,6 @@
  wp_db_user: wordpressuser
  wp_db_password: Tranhieu@123456
  password: 5ekdsci6pa%L1
- domain_name: vps2.hieutranqn.info
+ list_domain:
+     - domain_name: vps2.hieutranqn.info
+     - domain_name: vps21.hieutranqn.info

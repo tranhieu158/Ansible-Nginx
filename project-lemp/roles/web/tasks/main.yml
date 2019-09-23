@@ -2,21 +2,22 @@
 # tasks file for web
   - name: Create web-root directory
     file:
-       path: /var/www/{{ domain_name }}/html
+       path: /var/www/{{ item.domain_name }}/html
        state: directory
+    with_items: "{{ list_domain }}"
   - name: Ansible create file index.html
     copy:
-      dest: "/var/www/{{ domain_name }}/html/index.html"
+      dest: "/var/www/{{ item.domain_name }}/html/index.html"
       content: |
          <html>
                  <head>
                           <title>Welcome to Example.com!</title>
                  </head>
                  <body>
-                          <h1>Success! The example.com server block is working!</h1>
+                         <h1>Success! The example.com server block is working!</h1>
                  </body>
-        </html>
-        
+         </html>
+    with_items: "{{ list_domain }}"  
 
   - name: Add repo for NGINX
     yum: name=epel-release state=present
@@ -37,7 +38,8 @@
   - name: Create Nginx virtual host
     template:
      src: vhost.j2
-     dest: /etc/nginx/sites-enabled/{{ domain_name }}.conf
+     dest: /etc/nginx/sites-enabled/{{ item.domain_name }}.conf
+    with_items: "{{ list_domain }}"
     notify: restart nginx
   - name: Open port 80  using firewall-cmd
     command: firewall-cmd --permanent --zone=public --add-service=http
