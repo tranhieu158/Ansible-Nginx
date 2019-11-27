@@ -1,0 +1,3 @@
+[submodule "jenkin-ansible"]
+	path = jenkin-ansible
+	url = https://it71@gitlab.com/it71/jenkin-ansible.git
