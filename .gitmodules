@@ -1,0 +1,3 @@
+[submodule "Ansible-Jenkins"]
+	path = Ansible-Jenkins
+	url = ./Ansible-Jenkins
