@@ -2,9 +2,12 @@
   remote_user: root
   become: yes
 
+
   roles:
    # - common
      - web
      - db
      - php
      - wordpress
+
+
