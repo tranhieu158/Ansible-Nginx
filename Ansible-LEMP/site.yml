@@ -1,6 +1,7 @@
 
 - hosts: lemp
   remote_user: root
+  
   become: yes
   roles:
    # - common
