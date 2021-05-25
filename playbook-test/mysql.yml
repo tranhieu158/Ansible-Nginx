@@ -12,6 +12,7 @@
  #     - MySQL-python
    
  #   - name: Strat the MYSQL service
+   
      - name: Change mysql root password and keep track in 
        shell: |
          password_match=`awk '/A temporary password is generated for/ {a=$0} END{ print a }' /var/log/mysqld.log | awk '{print $(NF)}'`
