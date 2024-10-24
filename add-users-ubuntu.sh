@@ -1,8 +1,13 @@
 #!/bin/bash
 # Variables
-GROUPNAME=group04
+GROUPNAME=group06
 SHARED=/shared
 
+# Check if the number of arguments is even
+if [ $(( $# % 2 )) -ne 0 ]; then
+  echo "Usage: $0 USERNAME1 UID1 USERNAME2 UID2 ..."
+  exit 1
+fi
 # Create the group if it doesn't exist
 if ! getent group $GROUPNAME > /dev/null; then
   sudo groupadd $GROUPNAME
@@ -11,25 +16,34 @@ if ! getent group $GROUPNAME > /dev/null; then
     exit 1
   fi
 fi
-# Create users and add them to the group
-# for USERNAME in "${USERNAMES[@]}"; do
-for USERNAME in "$@"; do
-  # Create the user if it doesn't exist
-  if ! id "$USERNAME" &>/dev/null; then
-    sudo useradd -m $USERNAME
+
+while [ "$#" -gt 0 ]; do
+  USERNAME=$1
+  DESIRED_UID=$2
+
+  # Check if the useIRED_r or UID exists
+  if id "$USERNAME" &>/dev/null; then
+    USER_ID=$(id -u "$USERNAME")
+    echo "User $USERNAME already exists with id $USER_ID, each username must be unique."
+  elif getent passwd "$DESIRED_UID" &>/dev/null; then
+    echo "UID $DESIRED_UID is already in use"
+  else
+    # Create the user with the specified UID if neither exists
+    sudo useradd -m -u $DESIRED_UID $USERNAME
     if [ $? -ne 0 ]; then
-      echo "Failed to create user $USERNAME"
-      continue
+      echo "Failed to create user $USERNAME with UID $DESIRED_UID"
+    else
+      echo "User $USERNAME created with UID $DESIRED_UID"
     fi
   fi
-
-  # Add the user to the group
+    # Add user to group
    sudo usermod -a -G $GROUPNAME $USERNAME
   if [ $? -ne 0 ]; then
     echo "Failed to add user $USERNAME to group $GROUPNAME"
     continue
   fi
-    echo "User $USERNAME created and added to group $GROUPNAME successfully"
+  # Shift to the next pair of arguments
+  shift 2
 done
 # Set group ownership, permissions and Apply default ACLs
 
